@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор вкладов</title>
+<script type="text/javascript" src="/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=k7Xnkl7BxRnrour5I7gQgIlx0m_A-MLBdlIIsuK9nT3ffwIL0vXOE0GK9I9-JoHMPwwRG-5lJWNMeXblxNWtwy5u2OKamMRCCPqWeCVXfO2ehXf5MfqJJnXFjFl42e3kOLUERRdTqdBezxZ0oJuJ2dnNvDtQhM9C3rXnejtKbmKJIvx0nN0Jey-SGnxzMtzdG5Xk51BGMS5_BsBD9O6tNZfm18JNg78LKQEqlFX-jjjGkUn_qZ2DsEDlyXCg6zKiMx9JvsHXSIVUWlIrrOSAow" charset="UTF-8"></script><style>
+  /* Общие стили */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  select,
+  input[type="number"],
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  button {
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Медиа-запросы для адаптации к мобильным устройствам */
+  @media screen and (max-width: 600px) {
+    form {
+      max-width: none;
+    }
+  }
+</style>
+<script type="text/javascript" nonce="6ec1c140c001439f888679cd755" src="//local.adguard.org?ts=1711368839627&amp;type=content-script&amp;dmn=cdn.discordapp.com&amp;url=https%3A%2F%2Fcdn.discordapp.com%2Fattachments%2F979298894951378975%2F1221794878023798894%2Fcalc.html%3Fex%3D6613e026%26is%3D66016b26%26hm%3Dc22824af1a162e61159db5f7590b5b4a934ec7058f8ae44c83b70a891690363c%26&amp;app=browser.exe&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script>
+<script type="text/javascript" nonce="6ec1c140c001439f888679cd755" src="//local.adguard.org?ts=1711368839627&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script></head>
+<body>
+<h1>Калькулятор вкладов</h1>
+<form id="depositForm">
+  <label for="depositType">Выберите вид вклада:</label>
+  <select id="depositType" name="depositType">
+    <option value="popolnyayemy">Пополняемый</option>
+    <option value="srochny">Срочный</option>
+  </select>
+  <label for="depositTerm">Выберите срок вклада:</label>
+  <select id="depositTerm" name="depositTerm"></select>
+  <label for="depositAmount">Сумма вклада:</label>
+  <input type="number" id="depositAmount" name="depositAmount" required>
+  <button type="button" onclick="calculate()">Рассчитать</button>
+</form>
+
+<script>
+  const depositTypeElement = document.getElementById('depositType');
+  const depositTermElement = document.getElementById('depositTerm');
+  const depositAmountElement = document.getElementById('depositAmount');
+
+  // Добавление опций в зависимости от выбранного вида вклада
+  depositTypeElement.addEventListener('change', function() {
+    depositTermElement.innerHTML = ''; // Очищаем список сроков вклада
+    const selectedType = this.value;
+    const termOptions = {
+      popolnyayemy: {
+        '6 месяцев': 20,
+        '1 год': 22,
+        '1,5 года': 15,
+        '2 года': 10
+      },
+      srochny: {
+        '3 месяца': 20,
+        '6 месяцев': 22,
+        '9 месяцев': 23,
+        '1 год': 24,
+        '1,5 года': 18,
+        '2 года': 15
+      }
+    };
+
+    for (const term in termOptions[selectedType]) {
+      const option = document.createElement('option');
+      option.value = termOptions[selectedType][term];
+      option.textContent = term;
+      depositTermElement.appendChild(option);
+    }
+  });
+
+  // Функция для расчета вклада
+  function calculate() {
+    const depositType = depositTypeElement.value;
+    const depositTerm = depositTermElement.value;
+    const depositAmount = depositAmountElement.value;
+
+    // Расчет суммы в конце срока
+    const finalAmount = parseFloat(depositAmount) * (1 + parseFloat(depositTerm) / 100);
+
+    // Формирование текстового сообщения
+    const message = `Выбран вид вклада: ${depositType}.
+    Срок вклада: ${depositTerm}.
+    Сумма вклада: ${depositAmount}.
+    Полученная сумма в конце срока: ${finalAmount.toFixed(2)}.`;
+
+    // Вывод сообщения в отдельном окне
+    alert(message);
+  }
+</script>
+</body>
+</html>
